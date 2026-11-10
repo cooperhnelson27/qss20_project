@@ -16,7 +16,7 @@ Run all project code out of this environment.
 
 # Speech Data download 
 
-#run the data pull code file in the proper environment to download the files. About 6.5 gb. Might take some time. If it stops or is interrupted, it can be run again and won't redownload files already done. Puts these files into data/raw. For me this took around 10-15 minutes. 
+#run the data pull code file 01_data_pull in the proper environment to download the files. About 6.5 gb. Might take some time. If it stops or is interrupted, it can be run again and won't redownload files already done. Puts these files into data/raw. For me this took around 10-15 minutes. 
 
 From here forward, the congressional speech data is in data/raw/us_congressional_speeches/data 
 
@@ -28,6 +28,12 @@ https://data.stanford.edu/congress_text
 
 and download the hein_bound.zip, either manually or using curl. 
 
-7gb and took about an hour for me. Do not unzip it after downloading. Put this file in data/raw and then run speaker_map_pull.py
+7gb and took about an hour for me. Do not unzip it after downloading. Put this file in data/raw and then run 02_speaker_map_pull.py
 
 Once you have the speaker map files, you can delete the zip. 
+
+# Script ordering
+
+Run 03_speakers.ipynb to combine the speakermap into one parquet and get it into duck db as well. 
+
+Run 04_merge-ipynb to begin to merge the text and speaker data. Creates one new file, a duckdb, with a few reference tables and one stored table. 
