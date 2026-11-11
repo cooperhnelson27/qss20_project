@@ -1,8 +1,9 @@
 ## Code that pulls the speaker map files (party, name, state, etc.) out of the Stanford hein-bound zip.
 ## The Hugging Face speeches are missing party, so we get it from here.
-## Run from the project root folder (qss20_project) inside the qss20proj conda environment:
+## Run from the project root folder inside the qss20proj conda environment:
 ##     conda activate qss20proj
 ##     python code/speaker_map_pull.py
+##     LIke 01_data_pull, this file is not yet updated with the path references from paths.py, so it needs to be run from the project root qss20_project
 
 """
 Source: https://data.stanford.edu/congress_text  (Gentzkow, Shapiro, and Taddy)
@@ -13,7 +14,7 @@ NNN = three-digit Congress number, e.g. 043, 097, 111.
     - speeches_NNN.txt          the speech text               -> SKIP (most of the massive unzipped file size)
     - NNN_SpeakerMap.txt        speaker info for each speech  -> KEEP these (69 files)
 SpeakerMap files: header row, pipe | separated, no quotes around values.
-Columns include speakerid, speech_id, lastname, firstname, chamber, state, gender,
+Columns include speakerid, speech_id, lastname, firstname, chamber, state, gender, and a bunch more that will all come through. party is the important one. 
 
 This script just pulls out the speaker files. No need for the rest that we already got from hf more efficiently. 
 """
@@ -29,13 +30,13 @@ OUT = RAW / 'speakermap'        # another subfolder for this dataset
 
 # Set to True to delete the 7 GB zip once the speaker maps are out.
 # Left False by default since deleting can't be undone. Check the output first, then flip it.
-# likely easiest to just delete manually afterwards if it worked properly. 
+# likely easiest to just delete manually afterwards if it worked properly. This is what I did!
 DELETE_ZIP = False
 
 # Confirm we are in the correct folder and the zip is where we expect.
 if not Path('data').exists():
     raise SystemExit("Can't find the data/ folder. Run this from the qss20_project root folder.")
-if not ZIP_PATH.exists():
+if not ZIP_PATH.exists(): #has the file been downloaded and in the right place? 
     raise SystemExit(f"Can't find {ZIP_PATH}. Download hein-bound.zip and put it in data/raw/.")
 
 # Make the output folder if it does not exist yet
@@ -62,7 +63,7 @@ with zipfile.ZipFile(ZIP_PATH) as zf:
 
     # The codebook says there should be 69 (one per Congress, 43rd-111th). Warn if not.
     if len(speaker_files) != 69:
-        print(f'Heads up: expected 69 SpeakerMap files but found {len(speaker_files)}. Worth checking.')
+        print(f'expected 69 SpeakerMap files but found {len(speaker_files)}. Worth checking.')
 
     # Fix for a flaw in this particular zip. The zip has an index at the end saying where
     # each file starts. Because the zip is over 4 GB and was made on a Mac, many of those

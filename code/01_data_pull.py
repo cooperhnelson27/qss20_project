@@ -9,29 +9,25 @@ https://huggingface.co/datasets/Eugleo/us-congressional-speeches
 Files go to data/raw/, which is in the gitignore file.
 Data is around 6.4 GB so it may take a while.
 
-What the download looks like:
-    - 28 parquet files, data/train-00000-of-00028.parquet ... data/train-00027-of-00028.parquet
-      Together these are one big table of speeches, split into pieces ("shards").
-    - README.md, the dataset description from Hugging Face.
-There are no CSVs or other formats in this dataset, just parquet.
+All of the data is in parquet format. Columns are listed in the dataset. 
 """
 
 from pathlib import Path
 
 from huggingface_hub import snapshot_download
 
-# Global constants
 REPO_ID = "Eugleo/us-congressional-speeches"
 # Pin the exact version of the dataset. In case the data changes later
 # we will all still download the same thing.
 REVISION = "51776342f69868c2cc9a82dc74497d98f62008cb"
 
-# Relative paths, so this works for everyone.
+# Relative paths, so this works for everyone. #NOT UPDATED WITH references from path.py like the rest of the script yet. 
+# this file must be run from the project root to put the files in the right place. 
 # run script from the project root. qss20_project
 RAW = Path('data/raw')
-OUT = RAW / 'us_congressional_speeches'   # another subfolder for the dataset. 
+OUT = RAW / 'us_congressional_speeches'   # subfolder for the data.
 
-# confirm we are in the correct folder. 
+# confirm we are running this in the right place. Simple check so the 6gb isn't put in the wrong place. 
 if not Path('data').exists():
     raise SystemExit("Can't find the data/ folder. Run this from the qss20_project root folder.")
 
@@ -40,13 +36,15 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 print(f'Downloading {REPO_ID} into {OUT} ...')
 
-# snapshot_download grabs every file in the dataset repo that matches allow_patterns.
-#   repo_type='dataset' -> this is a dataset, not a model (the default)
-#   revision            -> the pinned version from above
-#   local_dir           -> where the files are saved
-#   allow_patterns      -> only the parquet files and the README, skip other junk and stuff 
+# hugging_face API design. 
+#   repo_type='dataset': this is a dataset, not an AI model (the default)
+#   revision             the saved version from above
+#   local_dir           where the files are saved
+#   allow_patterns      only the parquet files and the README, skip other junk and stuff 
 # If the download gets interrupted, just run the script again. Files that already
 # finished are skipped, so it picks up where it left off.
+
+
 snapshot_download(
     repo_id=REPO_ID,
     repo_type='dataset',
