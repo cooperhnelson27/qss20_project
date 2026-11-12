@@ -25,3 +25,5 @@ Objects in congress.duckdb:
 - speeches is the same thing, but for the congressional records. 
 - speeches_merged is these two combined on speech_id, minus duplicate variables. Most analysis can come from here. 
 - everything_but_speeches is the entire table without the text column, saved in storage. It is much smaller than the actual speech files. Useful for analysis that doesn't require the text. 
+
+*logit_scores.csv* Contains results per congress about the accuracy scores of a tfidf logit model including accuracy, republican precision, and republican recall. 
