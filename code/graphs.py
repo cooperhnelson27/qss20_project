@@ -61,7 +61,7 @@ for key, value in patterns.items():
     )
     ax.spines[['top', 'right']].set_visible(False)
 
-    fig.savefig(FIGURES / f'{key.lower().replace(' ', '_')}_by_party.png', bbox_inches='tight')
+    fig.savefig(FIGURES / 'frequency' / f'{key.lower().replace(' ', '_')}_by_party.png', bbox_inches='tight')
     plt.close(fig)
 
 

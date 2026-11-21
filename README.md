@@ -77,9 +77,9 @@ We can clearly see here that well speech length has been rising for members of b
 
 #### **Term Frequency Over Time**
 
-![Crisis Mentions](figures/crisis_by_party.png)
-![Socialism Mentions](figures/socialism_by_party.png)
-![Working Class Mentions](figures/working_class_by_party.png)
+![Crisis Mentions](figures/frequency/crisis_by_party.png)
+![Socialism Mentions](figures/frequency/socialism_by_party.png)
+![Working Class Mentions](figures/frequency/working_class_by_party.png)
 
 Initial analysis into the frequency with which certain terms and phrases have been used by the two parties over time yields some interesting results. Crisis framing has become much more common, suggesting increased polarization. Socialism, always a mroe common phrase used by the right than the left, peaked in the 1950s, and is on the rise again. Both parties have tried to appeal to the working class, but with a sharp divide in usage since 2000, with the left embracing the term whilst the right stopped using it as frequently. 
 
