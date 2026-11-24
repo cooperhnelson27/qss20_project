@@ -1,17 +1,17 @@
 # Partisan Congressional Speech Analysis
 QSS 20 Final Project by Cooper, Sheba, and Renee. 
-How does partisan rhetoric in congress diverge over time? 
+How did partisan rhetoric in congress diverge over time? 
 
 ## Introduction
 
 This project seeks to understand how political rhetoric in the US Congress has evolved differently over time for two parties (Democrats and Republicans), examining when certain topics became political and how that is reflected in the speech record. 
 
-We are studying a body of congressional speech that covers the 43rd through 111th congresses, (1873 - 2011), and we are analyzing it using text-as-data methods. 
+We are studying a body of congressional speech that covers the 43rd through 111th Congresses, (1873 - 2011), and we are analyzing it using text-as-data methods. 
 
 We hope to be able to answer questions such as: 
-- when did partisan division appear on major issues?
-- have existing divions ever weakened over time? 
-- when did certain topics become partisan? 
+- When did partisan division appear on major issues?
+- Have existing divisions ever weakened over time? 
+- When did certain topics become partisan? 
 
 ## Repository Structure
 ```
