@@ -4,3 +4,4 @@ data/raw/
 data/derived/
 .vscode/
 __pycache__/
+.ipynb_checkpoints/

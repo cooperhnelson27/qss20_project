@@ -46,7 +46,7 @@ patterns = {
     'Labor': r"(?i)\blabor(ers?)?\b",
     'Crisis': r"(?i)\bcris[ie]s\b",
     'Abortion': r"(?i)\babortions?\b",
-    'Baseline': r"(?i)\b(say|said)\b"
+    'Baseline': r"(?i)\b(say|said)\b" #compare just random slices on say/said - nothing topic specific 
 }
 
 procedural_terms = {
@@ -70,6 +70,10 @@ states_terms = {
     'wisconsin', 'wyoming', 'carolina', 'dakota', 'hampshire', 'jersey', 'york', 'rhode'
 }
 
+party_terms = {
+    'republican', 'republicans', 'democrat', 'democrats'
+}
+
 speaker_stops = {}
 for congress in congresses:
     first_id = congress * 10000000
@@ -82,7 +86,7 @@ for congress in congresses:
     ''').df()
 
     speakers = set(speakers_from_congress['lastname'].dropna().str.lower().str.findall(r'\b\w\w+\b').explode().dropna())
-    speaker_stops[congress] = list(ENGLISH_STOP_WORDS | speakers | procedural_terms | states_terms) #dict of stop words. same logic as prediction.ipynb, with more additions
+    speaker_stops[congress] = list(ENGLISH_STOP_WORDS | speakers | procedural_terms | states_terms | party_terms) #dict of stop words. same logic as prediction.ipynb, with more additions
 
 sample_size = 200   # smaller sample, because fewer speeches. per party per congress. 
 rng = np.random.default_rng(42)
@@ -96,6 +100,7 @@ def make_window(text, regex):
     return regex.sub(' ', ' '.join(words[start:start + 101]))
 
 results = []
+coefs = []
 
 for topic, pattern in patterns.items():
     print(topic)
@@ -134,6 +139,20 @@ for topic, pattern in patterns.items():
             logit = LogisticRegression(max_iter=2000)
             logit.fit(tfidf_train, y_train)
 
+            words = tfidf_vec.get_feature_names_out() #get the model words out 
+            is_rep = (y_train == 'Republican').to_numpy() # boolean series, numpy array fixes index issues . 
+            present = tfidf_train > 0   # does each speech contain each word
+
+            coefs.append(pd.DataFrame({
+                'topic': topic, #also include the topic in this df. wasn't in the other one. 
+                'congress': congress,
+                'seed': seed,
+                'word': words,
+                'coef': logit.coef_[0],
+                'n_rep_docs': np.asarray(present[is_rep].sum(axis=0)).ravel(),
+                'n_dem_docs': np.asarray(present[~is_rep].sum(axis=0)).ravel(),
+            }))
+
             results.append({
                 'topic': topic,
                 'seed': seed,
@@ -147,6 +166,8 @@ topic_scores = pd.DataFrame(results)
 topics_avg = topic_scores.groupby(['topic', 'congress', 'year'], as_index=False)['accuracy'].mean()
 topic_scores.to_csv(DERIVED / 'topic_logit_scores.csv', index=False)
 
+coefs_df = pd.concat(coefs, ignore_index=True)
+coefs_df.to_parquet(DERIVED / 'topic_word_coefs.parquet', index=False)
 
 for topic in patterns:
     data = topic_scores.loc[topic_scores['topic'] == topic]
@@ -174,3 +195,63 @@ for topic in patterns:
 
     fig.savefig(topicfigs / f'{topic}_accuracy.png', bbox_inches='tight')
     plt.close(fig)
+
+
+#one graph that combines them all, and loses the error bands 
+
+fig, ax = plt.subplots(figsize=(10, 5)) # a bit bigger 
+sns.lineplot(
+    data=topics_avg,
+    x='year',
+    y='accuracy',
+    hue='topic',
+    palette='tab10',
+    ax=ax,
+    marker='o',
+    markersize=3,
+    linewidth=1.2,
+)
+
+ax.set(
+    xlabel='Year',
+    ylabel='Test Accuracy',
+    title='Avg Prediction Accuracy by Topic (10 splits)'
+)
+
+ax.spines[['top', 'right']].set_visible(False)
+ax.axhline(0.5, linestyle='--', color='gray', label='Baseline (50%)')
+ax.legend(title='Topic', bbox_to_anchor=(1.02, 1), loc='upper left', frameon=False)
+
+fig.savefig(topicfigs / 'all_topics_accuracy.png', bbox_inches='tight')
+plt.close(fig)
+
+#crowded. Just keep a few. 
+
+keep = ['Baseline', 'Abortion', 'Immigration', 'Tariff']
+data2 = topics_avg.loc[topics_avg['topic'].isin(keep)]
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+sns.lineplot(
+    data=data2,
+    x='year',
+    y='accuracy',
+    hue='topic',
+    hue_order=keep,
+    palette='tab10',
+    ax=ax,
+    marker='o',
+    markersize=3,
+    linewidth=1.2,
+)
+ax.set(
+    xlabel='Year',
+    ylabel='Test Accuracy',
+    title='Avg Prediction Accuracy: Selected Topics (10 splits)'
+)
+ax.spines[['top', 'right']].set_visible(False)
+ax.axhline(0.5, linestyle='--', color='gray', label='Baseline (50%)')
+ax.legend(title='Topic', bbox_to_anchor=(1.02, 1), loc='upper left', frameon=False)
+
+fig.savefig(topicfigs / 'selected_topics_accuracy.png', bbox_inches='tight')
+plt.close(fig)
