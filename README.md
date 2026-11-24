@@ -93,3 +93,6 @@ Initial analysis into the frequency with which certain terms and phrases have be
 - huggingface_hub
 - jupyter
 - ipykernel
+- scikit-learn
+- pyarrow 
+
