@@ -1,3 +1,10 @@
+# Execution Order:
+This project follows the following workflow:
+1. Download Congressional Speech dataset via the file 01_data_pull
+2. Clean the raw data.
+3. Merge congressional speech dataset with party dataset from Stanford.
+4. Calculate word frequencies across political parties & generate visualizations.
+
 # Create a new environment for the project in Conda. This will ensure that we have the same compatibility. 
 
 `conda create -n qss20proj -c conda-forge python=3.12 pandas numpy scipy scikit-learn statsmodels matplotlib seaborn plotly jupyterlab ipykernel python-duckdb pyarrow requests beautifulsoup4 lxml python-dotenv pyyaml`
