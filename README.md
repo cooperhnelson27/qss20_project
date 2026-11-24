@@ -4,13 +4,13 @@ How does partisan rhetoric in congress diverge over time?
 
 ## Introduction
 
-This project seeks to understand how political rhetoric in congress has evolved differently over time for the two parties, examining when certain topics became political and how that is reflected in the speech record. 
+This project seeks to understand how political rhetoric in the US Congress has evolved differently over time for two parties (Democrats and Republicans), examining when certain topics became political and how that is reflected in the speech record. 
 
 We are studying a body of congressional speech that covers the 43rd through 111th congresses, (1873 - 2011), and we are analyzing it using text-as-data methods. 
 
 We hope to be able to answer questions such as: 
-- when did division appear on major issues?
-- having existing divions ever weakened over time? 
+- when did partisan division appear on major issues?
+- have existing divions ever weakened over time? 
 - when did certain topics become partisan? 
 
 ## Repository Structure
@@ -68,12 +68,12 @@ qss20_project
 **Missing Data** 
 ![Share of speeches missing party](figures/missing_rates.png)
 
-Many of the speeches in the corpus are missing information on party, which makes our party analysis more challenging. However, we believe that many of these entrances are likely procedural speech or presiding officers. 
+Many of the speeches in the corpus are missing information on party, which makes our party analysis more challenging. However, we believe that many of these entrances are likely procedural speech or presiding officers, and not given by an identifiable member of Congress. 
 
 **Speech Length**
 ![Median Speech Length by Party](figures/party_speech_length.png)
 
-We can clearly see here that well speech length has been rising for members of both parties, the speeches that are missing party are both shorter and haven't been changing over time, suggesting that much is procedural. 
+We can clearly see here that while speech length has been rising for members of both parties, the speeches that are missing party are both shorter and haven't been changing over time, suggesting that much is procedural. 
 
 #### **Term Frequency Over Time**
 
@@ -81,14 +81,14 @@ We can clearly see here that well speech length has been rising for members of b
 ![Socialism Mentions](figures/frequency/socialism_by_party.png)
 ![Working Class Mentions](figures/frequency/working_class_by_party.png)
 
-Initial analysis into the frequency with which certain terms and phrases have been used by the two parties over time yields some interesting results. Crisis framing has become much more common, suggesting increased polarization. Socialism, always a mroe common phrase used by the right than the left, peaked in the 1950s, and is on the rise again. Both parties have tried to appeal to the working class, but with a sharp divide in usage since 2000, with the left embracing the term whilst the right stopped using it as frequently. 
+Initial analysis into the frequency with which certain terms and phrases have been used by the two parties over time yields some interesting results. Crisis framing has become much more common, suggesting increased polarization. Socialism, always a more common phrase used by the right than the left, peaked in the 1950s, and is on the rise again. Both parties have sought to appeal to the working class, reflected in the growing divergence in usage since 2000: the left has embraced the term, while the right has used it less frequently. 
 
 ## Requirements
 
 - Python 
 - Pandas
 - duckdb 
-- matoplotlib
+- matplotlib
 - seaborn
 - huggingface_hub
 - jupyter
