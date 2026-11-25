@@ -153,4 +153,8 @@ The prediction models identify words with strong weights one way or another that
 - jupyter
 - ipykernel
 - scikit-learn
-- pyarrow 
+- pyarrow
+
+#### AI Disclaimer 
+
+We used AI tools (Claude Opus 5.5) as a general coding assistant to help us work through problems, helping with debugging, script review, code improvements, and general assistance. All decisions were reviewed and made by the group. 
